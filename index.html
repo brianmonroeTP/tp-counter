@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Totes Work Streak Counter</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- Tailwind CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&display=swap" rel="stylesheet">
+</head>
+
+<body class="w-screen h-screen bg-slate-900 text-white font-[Inter] overflow-hidden">
+
+  <main class="w-full h-full flex flex-col items-center justify-center px-6 text-center">
+
+    <!-- Logo Placeholder -->
+    <div class="mb-10">
+      <div class="w-96 h-40 bg-slate-100 rounded-xl flex items-center justify-center text-slate-300 uppercase tracking-widest text-lg">
+        <img src="https://api.totallypromotional.com/Data/Media/37612a77-e007-4fdc-8bd5-888217dbb9b1Z-TP-SiteLogo-265x50px.png" />
+      </div>
+    </div>
+
+    <!-- Intro -->
+    <h1 class="text-3xl md:text-4xl font-semibold text-slate-100 mb-6">
+      It’s been
+    </h1>
+
+    <!-- Counter -->
+    <div
+      id="counter"
+      class="font-black tracking-tight leading-none tabular-nums
+         text-5xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl"
+    >
+      <span id="days">0</span> DAYS
+      <span id="hours">0</span> HOURS
+      <span id="minutes">0</span> MINUTES
+      <span id="seconds">0</span> SECONDS
+    </div>
+
+    <!-- Subtext -->
+    <p class="mt-4 text-xl md:text-2xl font-semibold text-slate-100 max-w-2xl">
+      since a cleaning person has respectully resigned.
+    </p>
+
+    <!-- Footer -->
+    <p class="absolute bottom-6 text-xs text-slate-500">
+      ©2026 Casad Company
+    </p>
+
+  </main>
+
+  <script>
+    // SET START DATE HERE
+    const startDate = new Date(2026, 0, 9, 7, 30, 0);
+
+    function updateCounter() {
+      const now = new Date();
+      let diffMs = now - startDate;
+
+      if (diffMs < 0) diffMs = 0;
+
+      const totalSeconds = Math.floor(diffMs / 1000);
+
+      const days = Math.floor(totalSeconds / (60 * 60 * 24));
+      const hours = Math.floor((totalSeconds % (60 * 60 * 24)) / (60 * 60));
+      const minutes = Math.floor((totalSeconds % (60 * 60)) / 60);
+      const seconds = totalSeconds % 60;
+
+      document.getElementById("days").textContent = days;
+      document.getElementById("hours").textContent = hours;
+      document.getElementById("minutes").textContent = minutes;
+      document.getElementById("seconds").textContent = seconds;
+    }
+
+    updateCounter();
+    setInterval(updateCounter, 1000);
+  </script>
+
+</body>
+</html>
