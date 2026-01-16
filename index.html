@@ -17,6 +17,23 @@
 
   <!-- Font -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&display=swap" rel="stylesheet">
+
+  <style>
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(12px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .animate-fade-in {
+      animation: fadeInUp 0.5s ease-out both;
+    }
+  </style>
 </head>
 
 <body class="w-screen h-screen bg-slate-900 text-white font-[Inter] overflow-hidden">
@@ -52,6 +69,12 @@
       since a cleaning person has respectully resigned.
     </p>
 
+    <!-- Milestones -->
+    <div
+      id="milestones"
+      class="mt-8 flex flex-wrap justify-center gap-4 text-3xl"
+    ></div>
+
     <!-- Footer -->
     <p class="absolute bottom-6 text-xs text-slate-500">
       ©2026 Casad Company
@@ -59,32 +82,122 @@
 
   </main>
 
-  <script>
-    // SET START DATE HERE
-    const startDate = new Date(2026, 0, 9, 7, 30, 0);
+    <script>
+      // SET START DATE HERE
+      const startDate = new Date(2026, 0, 9, 7, 30, 0);
+      const MILESTONE_KEY = "tp-week-milestones";
 
-    function updateCounter() {
-      const now = new Date();
-      let diffMs = now - startDate;
+      const canvas = document.getElementById("confetti-canvas");
+      const ctx = canvas.getContext("2d");
 
-      if (diffMs < 0) diffMs = 0;
+      function resizeCanvas() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+      }
 
-      const totalSeconds = Math.floor(diffMs / 1000);
+      window.addEventListener("resize", resizeCanvas);
+      resizeCanvas();
 
-      const days = Math.floor(totalSeconds / (60 * 60 * 24));
-      const hours = Math.floor((totalSeconds % (60 * 60 * 24)) / (60 * 60));
-      const minutes = Math.floor((totalSeconds % (60 * 60)) / 60);
-      const seconds = totalSeconds % 60;
+      function fireConfetti() {
+        const pieces = [];
+        const colors = ["#facc15", "#fb923c", "#38bdf8", "#4ade80", "#f472b6"];
 
-      document.getElementById("days").textContent = days;
-      document.getElementById("hours").textContent = hours;
-      document.getElementById("minutes").textContent = minutes;
-      document.getElementById("seconds").textContent = seconds;
-    }
+        for (let i = 0; i < 150; i++) {
+          pieces.push({
+            x: Math.random() * canvas.width,
+            y: -20,
+            size: Math.random() * 8 + 4,
+            speedY: Math.random() * 4 + 3,
+            speedX: (Math.random() - 0.5) * 6,
+            color: colors[Math.floor(Math.random() * colors.length)],
+            rotation: Math.random() * Math.PI
+          });
+        }
 
-    updateCounter();
-    setInterval(updateCounter, 1000);
-  </script>
+        function animate() {
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
 
+          pieces.forEach((p, index) => {
+            p.y += p.speedY;
+            p.x += p.speedX;
+            p.rotation += 0.05;
+
+            ctx.save();
+            ctx.translate(p.x, p.y);
+            ctx.rotate(p.rotation);
+            ctx.fillStyle = p.color;
+            ctx.fillRect(-p.size / 2, -p.size / 2, p.size, p.size);
+            ctx.restore();
+
+            if (p.y > canvas.height) {
+              pieces.splice(index, 1);
+            }
+          });
+
+          if (pieces.length > 0) {
+            requestAnimationFrame(animate);
+          }
+        }
+
+        animate();
+      }
+
+      function updateCounter() {
+        const now = new Date();
+        let diffMs = now - startDate;
+
+        if (diffMs < 0) diffMs = 0;
+
+        const totalSeconds = Math.floor(diffMs / 1000);
+
+        const days = Math.floor(totalSeconds / (60 * 60 * 24));
+        const hours = Math.floor((totalSeconds % (60 * 60 * 24)) / (60 * 60));
+        const minutes = Math.floor((totalSeconds % (60 * 60)) / 60);
+        const seconds = totalSeconds % 60;
+
+        document.getElementById("days").textContent = days;
+        document.getElementById("hours").textContent = hours;
+        document.getElementById("minutes").textContent = minutes;
+        document.getElementById("seconds").textContent = seconds;
+
+        updateMilestones(days);
+      }
+
+      function updateMilestones(days) {
+        const weeksCompleted = Math.floor(days / 7);
+        const milestonesEl = document.getElementById("milestones");
+
+        const storedWeeks = JSON.parse(
+          localStorage.getItem(MILESTONE_KEY) || "[]"
+        );
+
+        for (let week = 1; week <= weeksCompleted; week++) {
+          if (!storedWeeks.includes(week)) {
+            storedWeeks.push(week);
+
+            const trophy = document.createElement("div");
+            trophy.className =
+              "flex items-center gap-2 px-4 py-2 bg-amber-500/10 border border-amber-400/30 rounded-xl text-amber-400 animate-fade-in";
+            trophy.innerHTML = `🏆 <span class="text-xl font-semibold">Week ${week}</span>`;
+
+            milestonesEl.appendChild(trophy);
+
+            // 🎉 CONFETTI BURST
+            fireConfetti();
+          }
+        }
+
+        localStorage.setItem(MILESTONE_KEY, JSON.stringify(storedWeeks));
+      }
+
+      updateCounter();
+      setInterval(updateCounter, 1000);
+    </script>
+
+
+  <canvas
+    id="confetti-canvas"
+    class="fixed inset-0 pointer-events-none z-50"
+  ></canvas>
 </body>
 </html>
