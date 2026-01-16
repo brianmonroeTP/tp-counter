@@ -36,9 +36,9 @@
   </style>
 </head>
 
-<body class="w-screen h-screen bg-slate-900 text-white font-[Inter] overflow-hidden">
+<body class="w-screen min-h-screen bg-slate-900 text-white font-[Inter] overflow-x-hidden">
 
-  <main class="w-full h-full flex flex-col items-center justify-center px-6 text-center">
+  <main class="w-full min-h-screen flex flex-col items-center justify-center px-6 text-center">
 
     <!-- Logo Placeholder -->
     <div class="mb-10">
@@ -93,12 +93,37 @@
       🎉 MORE CONFETTI 🎉
     </button>
 
-    <!-- Footer -->
-    <p class="absolute bottom-6 text-xs text-slate-500">
-      ©2026 Casad Company
-    </p>
+
 
   </main>
+
+  <!-- Tips Section -->
+<section class="bg-slate-100 text-slate-900 py-20 px-6">
+  <div class="max-w-4xl mx-auto text-center">
+
+    <h2 class="text-3xl md:text-4xl font-extrabold mb-10 tracking-tight">
+      Tips to Keep This Streak Going
+    </h2>
+
+    <ul class="space-y-6 text-lg md:text-xl text-left max-w-2xl mx-auto">
+      <li class="flex gap-4 items-start">
+        <span class="text-amber-500 text-2xl">✔</span>
+        <span>No duke'en on the floors.</span>
+      </li>
+
+      <li class="flex gap-4 items-start">
+        <span class="text-amber-500 text-2xl">✔</span>
+        <span>No products stuck to walls.</span>
+      </li>
+
+      <li class="flex gap-4 items-start">
+        <span class="text-amber-500 text-2xl">✔</span>
+        <span>Be a decent human.</span>
+      </li>
+    </ul>
+  </div>
+</section>
+
 
     <canvas
       id="confetti-canvas"
