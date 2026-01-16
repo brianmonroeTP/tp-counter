@@ -147,6 +147,24 @@
         animate();
       }
 
+      function renderStoredMilestones() {
+        const milestonesEl = document.getElementById("milestones");
+        milestonesEl.innerHTML = "";
+
+        const storedWeeks = JSON.parse(
+          localStorage.getItem(MILESTONE_KEY) || "[]"
+        );
+
+        storedWeeks.forEach((week) => {
+          const trophy = document.createElement("div");
+          trophy.className =
+            "flex items-center gap-2 px-4 py-2 bg-amber-500/10 border border-amber-400/30 rounded-xl text-amber-400";
+          trophy.innerHTML = `🏆 <span class="text-xl font-semibold">Week ${week}</span>`;
+
+          milestonesEl.appendChild(trophy);
+        });
+      }
+
       function updateCounter() {
         const now = new Date();
         let diffMs = now - startDate;
@@ -187,7 +205,7 @@
 
             milestonesEl.appendChild(trophy);
 
-            // 🎉 CONFETTI BURST
+            // 🎉 Fire confetti ONLY for new milestones
             fireConfetti();
           }
         }
@@ -195,6 +213,9 @@
         localStorage.setItem(MILESTONE_KEY, JSON.stringify(storedWeeks));
       }
 
+      renderStoredMilestones();
+      updateCounter();
+      setInterval(updateCounter, 1000);
       updateCounter();
       setInterval(updateCounter, 1000);
     </script>
