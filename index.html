@@ -42,7 +42,7 @@
 
     <!-- Logo Placeholder -->
     <div class="mb-10">
-      <div class="w-96 h-40 bg-slate-100 rounded-xl flex items-center justify-center text-slate-300 uppercase tracking-widest text-lg">
+      <div class="w-86 h-40 bg-slate-100 rounded-xl flex items-center justify-center text-slate-300 uppercase tracking-widest text-lg px-6">
         <img src="https://api.totallypromotional.com/Data/Media/37612a77-e007-4fdc-8bd5-888217dbb9b1Z-TP-SiteLogo-265x50px.png" />
       </div>
     </div>
@@ -53,16 +53,25 @@
     </h1>
 
     <!-- Counter -->
-    <div
-      id="counter"
-      class="font-black tracking-tight leading-none tabular-nums
-         text-5xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl"
-    >
-      <span id="days">0</span> DAYS
-      <span id="hours">0</span> HOURS
-      <span id="minutes">0</span> MINUTES
-      <span id="seconds">0</span> SECONDS
-    </div>
+      <div
+        id="counter"
+        class="font-black tabular-nums tracking-tight leading-none
+              text-5xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl
+              flex flex-col sm:flex-row gap-3 sm:gap-6 justify-center"
+      >
+        <div>
+          <span id="days" class="inline-block w-[3ch] text-right">0</span> DAYS
+        </div>
+        <div>
+          <span id="hours" class="inline-block w-[2ch] text-right">0</span> HOURS
+        </div>
+        <div>
+          <span id="minutes" class="inline-block w-[2ch] text-right">0</span> MINUTES
+        </div>
+        <div>
+          <span id="seconds" class="inline-block w-[2ch] text-right">0</span> SECONDS
+        </div>
+      </div>
 
     <!-- Subtext -->
     <p class="mt-4 text-xl md:text-2xl font-semibold text-slate-100 max-w-2xl">
@@ -74,6 +83,15 @@
       id="milestones"
       class="mt-8 flex flex-wrap justify-center gap-4 text-3xl"
     ></div>
+
+    <!-- More confetti btn -->
+    <button
+      onclick="fireConfetti()"
+      class="mt-6 px-6 py-3 rounded-xl bg-amber-500/20 border border-amber-400/40
+            text-amber-300 font-semibold hover:bg-amber-500/30 transition"
+    >
+      🎉 MORE CONFETTI 🎉
+    </button>
 
     <!-- Footer -->
     <p class="absolute bottom-6 text-xs text-slate-500">
@@ -88,6 +106,13 @@
     ></canvas>
 
     <script>
+      const LOAD_CONFETTI_KEY = "tp-confetti-fired";
+            function fireConfettiOnceOnLoad() {
+        if (!sessionStorage.getItem(LOAD_CONFETTI_KEY)) {
+          fireConfetti();
+          sessionStorage.setItem(LOAD_CONFETTI_KEY, "true");
+        }
+      }
       // SET START DATE HERE
       const startDate = new Date(2026, 0, 9, 7, 30, 0);
       const MILESTONE_KEY = "tp-week-milestones";
@@ -216,8 +241,10 @@
       renderStoredMilestones();
       updateCounter();
       setInterval(updateCounter, 1000);
+      fireConfettiOnceOnLoad();
       updateCounter();
       setInterval(updateCounter, 1000);
+      renderStoredMilestones();
     </script>
 
 </body>
